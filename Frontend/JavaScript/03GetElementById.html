@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="text" id="v1" placeholder="Enter Value 01"><br><br>
+    <input type="text" id="v2" placeholder="Enter Value 02">
+
+    <br><br>
+    <button onclick="addTwoNum()">Click Me to Get Values</button>
+
+    <script>
+        function addTwoNum() {
+            num1 = document.getElementById("v1").value;
+            num2 = document.getElementById("v2").value;
+
+            answer01 = parseInt(num1) + parseInt(num2);
+
+            alert(answer01);
+            alert("The Sum of " + num1 + " and " + num2 + " is: " + answer01);
+        }
+    </script>
+</body>
+
+</html>
