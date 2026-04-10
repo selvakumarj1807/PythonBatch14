@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="text" placeholder="Enter your Employee ID"><br><br>
+
+    <div id="myDiv">
+        <input type="text" placeholder="Enter your Name"><br><br>
+        <input type="text" placeholder="Enter your Mobile"><br><br>
+        <input type="text" placeholder="Enter your Aadhar Number">
+        <input type="text" placeholder="Enter your Pan Number">
+    </div>
+    <br><br>
+
+    <button onclick="getEmployeeDetails()">Get Employee Details</button>
+
+    <div id="result">
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+
+    <p>-----------------------------------------</p>
+
+    <div id="loopResult">
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+
+    <script>
+        function getEmployeeDetails() {
+            employeeID = document.getElementsByTagName("input")[0].value;
+
+            mydiv = document.getElementById("myDiv");
+            employeeName = mydiv.getElementsByTagName("input")[0].value;
+            employeeMobile = mydiv.getElementsByTagName("input")[1].value;
+            employeeAadhar = mydiv.getElementsByTagName("input")[2].value;
+
+            result = document.getElementById("result").getElementsByTagName("p");
+
+            result[0].innerHTML = "Employee ID: " + employeeID;
+            result[1].innerHTML = "Employee Name: " + employeeName;
+            result[2].innerHTML = "Employee Mobile: " + employeeMobile;
+            result[3].innerHTML = "Employee Aadhar: " + employeeAadhar;
+
+            // Looping through the input elements inside myDiv and displaying their values in loopResult div
+            
+            data = mydiv.getElementsByTagName("input");
+
+            loopResult = document.getElementById("loopResult").getElementsByTagName("p");
+
+            for(i = 0; i < data.length; i++) // 0 < 3, 1 < 3, 2 < 3, 3 < 3 (false)
+            {
+                loopResult[i].innerHTML = data[i].value;
+            }
+        }
+    </script>
+</body>
+
+</html>

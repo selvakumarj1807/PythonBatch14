@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="text" id="age" placeholder="Enter your Age"><br><br>
+
+    <button onclick="ageEligible()">Click Me to Get Status</button><br>
+
+    <p id="result">Enter your age and click the button</p>
+
+    <script>
+        function ageEligible() {
+            age = document.getElementById("age").value;
+            result = document.getElementById("result");
+
+            if (age >= 18) {
+                result.innerHTML = age +" - is above 18. So you are eligible to vote.";
+            } else {
+                result.innerHTML = age +" - is not above 18. So you are not eligible to vote.";
+            }
+        }
+
+    </script>
+</body>
+
+</html>
