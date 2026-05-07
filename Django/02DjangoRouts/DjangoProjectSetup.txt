@@ -1,0 +1,171 @@
+Django Project Setup Guide
+==========================
+
+Prerequisites:
+--------------
+- Python installed (preferably 3.8+)
+- pip installed (Python package manager)
+
+Step-by-Step Instructions:
+--------------------------
+
+1. Check Python & pip Versions:
+   --------------------------------
+   python --version
+   pip --version
+
+2. Create a Virtual Environment:
+   --------------------------------
+   python -m venv myworld
+
+3. Activate the Virtual Environment:
+   ----------------------------------
+   On Windows:
+       .\myworld\Scripts\activate
+
+   On macOS/Linux:
+       source myworld/bin/activate
+
+
+If have a CMD Error :
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+4. Install Django:
+   -----------------
+   pip install django
+
+   To verify:
+   django-admin --version
+
+5. Create a Django Project (in current directory):
+   ------------------------------------------------
+   django-admin startproject projectName
+   
+   cd projectName
+
+6. Create a Django App:
+   ---------------------
+   python manage.py startapp app
+
+7. Register the App in settings.py:
+   ---------------------------------
+   In projectName/settings.py, add your app to INSTALLED_APPS:
+
+       INSTALLED_APPS = [
+           ...
+           'app',
+       ]
+
+8. Add Html Files
+app/templates/index.html
+------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Index Page</h1>
+
+    <hr>
+
+    <a href="/">Home</a> <br><br>
+    <a href="/about">About</a> <br><br>
+    <a href="/contact">Contact</a>
+</body>
+
+</html>
+
+app/templates/about.html
+------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>About Page</h1>
+
+    <hr>
+
+    <a href="/">Home</a> <br><br>
+    <a href="/about">About</a> <br><br>
+    <a href="/contact">Contact</a>
+</body>
+
+</html>
+
+app/templates/contact.html
+--------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Contact Page</h1>
+
+    <hr>
+
+    <a href="/">Home</a> <br><br>
+    <a href="/about">About</a> <br><br>
+    <a href="/contact">Contact</a>
+</body>
+
+</html>
+
+9. app/views.py
+---------------
+
+from django.shortcuts import render
+
+# Create your views here.
+
+def index(request):
+    return render(request, 'index.html')
+
+def about(request):
+    return render(request, 'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
+
+
+10. projectName/urls.py
+-----------------------
+
+from django.contrib import admin
+from django.urls import path
+
+from app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.index),
+    path('about', views.about),
+    path('contact', views.contact)
+]
+
+11. Run the Development Server:
+-------------------------------
+   python manage.py runserver
+
+   Open your browser at: http://127.0.0.1:8000
+
+Your Django project is now set up and ready!
