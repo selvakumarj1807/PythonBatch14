@@ -1,0 +1,397 @@
+Django Project Setup Guide
+==========================
+
+Prerequisites:
+--------------
+- Python installed (preferably 3.8+)
+- pip installed (Python package manager)
+
+Step-by-Step Instructions:
+--------------------------
+
+1. Check Python & pip Versions:
+   --------------------------------
+   python --version
+   pip --version
+
+2. Create a Virtual Environment:
+   --------------------------------
+   python -m venv myworld
+
+3. Activate the Virtual Environment:
+   ----------------------------------
+   On Windows:
+       .\myworld\Scripts\activate
+
+   On macOS/Linux:
+       source myworld/bin/activate
+
+
+If have a CMD Error :
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+4. Install Django:
+   -----------------
+   pip install django
+
+   To verify:
+   django-admin --version
+
+5. Create a Django Project (in current directory):
+   ------------------------------------------------
+   django-admin startproject projectName .
+
+6. Create a Django App:
+   ---------------------
+   python manage.py startapp app
+
+7. Register the App in settings.py:
+   ---------------------------------
+   In projectName/settings.py, add your app to INSTALLED_APPS:
+
+       INSTALLED_APPS = [
+           ...
+           'app',
+       ]
+
+8. app/templates/index.html
+---------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Registration Form</title>
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Left Side Image -->
+        <div class="image-section">
+            <img src="{% static 'assets/images/registerBackground.png' %}" alt="Registration Image">
+        </div>
+
+        <!-- Right Side Form -->
+        <div class="form-section">
+
+            <form id="registerForm">
+
+                <h1>Create Account</h1>
+                <p class="subtitle">Register your account here</p>
+
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullname" placeholder="Enter your full name">
+                    <small class="error" id="nameError"></small>
+                </div>
+
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email">
+                    <small class="error" id="emailError"></small>
+                </div>
+
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="phone" placeholder="Enter your phone number">
+                    <small class="error" id="phoneError"></small>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                    <small class="error" id="passwordError"></small>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm password">
+                    <small class="error" id="confirmPasswordError"></small>
+                </div>
+
+                <button type="submit">Register</button>
+
+                <p class="login-text">
+                    Already have an account?
+                    <a href="#">Login</a>
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script src="{% static 'assets/js/script.js' %}"></script>
+
+</body>
+
+</html>
+
+app/static/assets/css/style.css
+-------------------------------
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.image-section {
+    flex: 1;
+    background: #f5f5f5;
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form-section {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    width: 100%;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.subtitle {
+    margin-bottom: 30px;
+    color: gray;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #444;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #4facfe;
+    outline: none;
+    box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background: #4facfe;
+    color: white;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00c6fb;
+}
+
+.login-text {
+    margin-top: 20px;
+    text-align: center;
+    color: #555;
+}
+
+.login-text a {
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Responsive */
+
+@media(max-width: 900px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .image-section {
+        height: 300px;
+    }
+
+    .form-section {
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+}
+
+@media(max-width: 500px) {
+
+    .form-section {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .input-group input {
+        padding: 12px;
+    }
+
+    button {
+        padding: 13px;
+        font-size: 16px;
+    }
+}
+
+
+app/static/assets/js/script.js
+
+const form = document.getElementById("registerForm");
+
+form.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    // Inputs
+    let fullname = document.getElementById("fullname").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+    let password = document.getElementById("password").value.trim();
+    let confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+    // Errors
+    let nameError = document.getElementById("nameError");
+    let emailError = document.getElementById("emailError");
+    let phoneError = document.getElementById("phoneError");
+    let passwordError = document.getElementById("passwordError");
+    let confirmPasswordError = document.getElementById("confirmPasswordError");
+
+    // Clear errors
+    nameError.innerHTML = "";
+    emailError.innerHTML = "";
+    phoneError.innerHTML = "";
+    passwordError.innerHTML = "";
+    confirmPasswordError.innerHTML = "";
+
+    let isValid = true;
+
+    // Name Validation
+    if (fullname === "") {
+        nameError.innerHTML = "Full name is required";
+        isValid = false;
+    }
+
+    // Email Validation
+    if (email === "") {
+        emailError.innerHTML = "Email is required";
+        isValid = false;
+    }
+
+    // Phone Validation
+    if (phone.length !== 10) {
+        phoneError.innerHTML = "Phone number must be 10 digits";
+        isValid = false;
+    }
+
+    // Password Validation
+    if (password.length < 6) {
+        passwordError.innerHTML = "Password must be at least 6 characters";
+        isValid = false;
+    }
+
+    // Confirm Password
+    if (password !== confirmPassword) {
+        confirmPasswordError.innerHTML = "Passwords do not match";
+        isValid = false;
+    }
+
+    // Success
+    if (isValid) {
+        alert("Registration Successful!");
+        form.reset();
+    }
+
+});
+
+app/static/assets/images/a.jpg
+
+
+9. app/views.py
+
+def index(request):
+    return render(request, 'index.html')
+
+10. projectName/urls.py
+
+from app import views
+
+urlpatterns = [
+    ....
+    path('', views.index)
+]
+
+
+11. Run the Development Server:
+   ----------------------------
+   python manage.py runserver
+
+   Open your browser at: http://127.0.0.1:8000
+
+Your Django project is now set up and ready!
