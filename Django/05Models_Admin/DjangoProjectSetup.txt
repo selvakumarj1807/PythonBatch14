@@ -1,0 +1,121 @@
+Django Project Setup Guide
+==========================
+
+Prerequisites:
+--------------
+- Python installed (preferably 3.8+)
+- pip installed (Python package manager)
+
+Step-by-Step Instructions:
+--------------------------
+
+1. Check Python & pip Versions:
+   --------------------------------
+   python --version
+   pip --version
+
+2. Create a Virtual Environment:
+   --------------------------------
+   python -m venv myworld
+
+3. Activate the Virtual Environment:
+   ----------------------------------
+   On Windows:
+       .\myworld\Scripts\activate
+
+   On macOS/Linux:
+       source myworld/bin/activate
+
+
+If have a CMD Error :
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+4. Install Django:
+   -----------------
+   pip install django
+
+   To verify:
+   django-admin --version
+
+5. Create a Django Project (in current directory):
+   ------------------------------------------------
+   django-admin startproject employeeManagement .
+
+6. Create a Django App:
+   ---------------------
+   python manage.py startapp app
+
+7. Register the App in settings.py:
+   ---------------------------------
+   In employeeManagement/settings.py, add your app to INSTALLED_APPS:
+
+       INSTALLED_APPS = [
+           ...
+           'app',
+       ]
+
+8. Create Models(Table & Columns):
+----------------------------------
+
+app/models.py:
+--------------
+
+from django.db import models
+
+# Create your models here.
+
+class Employees(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    mobile = models.CharField(max_length=15)
+    departmentid = models.CharField(max_length=50)
+
+class Departments(models.Model):
+    name = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    
+    class Meta:
+        db_table = 'departments'
+        
+    def __str__(self):
+        return self.name + " - " + self.location
+        
+9. Run Command In your Terminal for Migrations & Migrate
+--------------------------------------------------------
+
+python manage.py makemigrations
+
+python manage.py migrate 
+
+10. Run Command In your Terminal for CreateSuperUSer (Admin Page):
+------------------------------------------------------------------
+
+python manage.py createsuperuser
+
+11. Register your models in admin.py file:
+------------------------------------------
+
+app/admin.py
+------------
+
+from django.contrib import admin
+
+from app.models import Departments, Employees
+
+# Register your models here.
+
+admin.site.register(Employees)
+admin.site.register(Departments)
+
+
+12. Run the Development Server:
+   ----------------------------
+   python manage.py runserver
+
+   Open your browser at: http://127.0.0.1:8000
+
+   Open your browser at: http://127.0.0.1:8000/admin
+   For Admin Page.
+
+Your Django project is now set up and ready!
