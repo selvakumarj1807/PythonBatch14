@@ -1,0 +1,186 @@
+Django Project Setup Guide
+==========================
+
+Prerequisites:
+--------------
+- Python installed (preferably 3.8+)
+- pip installed (Python package manager)
+
+Step-by-Step Instructions:
+--------------------------
+
+1. Check Python & pip Versions:
+   --------------------------------
+   python --version
+   pip --version
+
+2. Create a Virtual Environment:
+   --------------------------------
+   python -m venv myworld
+
+3. Activate the Virtual Environment:
+   ----------------------------------
+   On Windows:
+       .\myworld\Scripts\activate
+
+   On macOS/Linux:
+       source myworld/bin/activate
+
+
+If have a CMD Error :
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+4. Install Django:
+   -----------------
+   pip install django
+
+   To verify:
+   django-admin --version
+
+5. Create a Django Project (in current directory):
+   ------------------------------------------------
+   django-admin startproject projectName .
+
+6. Create a Django App:
+   ---------------------
+   python manage.py startapp app01
+   python manage.py startapp app02
+   python manage.py startapp app03
+
+7. Register the App in settings.py:
+   ---------------------------------
+   In projectName/settings.py, add your app to INSTALLED_APPS:
+
+       INSTALLED_APPS = [
+           ...
+           'app01',
+           'app02',
+           'app03'
+       ]
+
+8. app01/templates/app01/index.html
+-----------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Django App01</h1>
+
+    <hr>
+
+    <a href="/">App 01 Page</a> <br><br>
+    <a href="/app02/">App 02 Page</a> <br><br>
+    <a href="/app03/">App 03 Page</a>
+</body>
+</html>
+
+
+9. app01/views.py
+-----------------
+
+def index(request):
+    return render(request, 'app01/index.html')
+
+10. app02/templates/app02/index.html
+------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Django App02</h1>
+
+    <hr>
+    <a href="/">App 01 Page</a> <br><br>
+    <a href="/app02/">App 02 Page</a> <br><br>
+    <a href="/app03/">App 03 Page</a>
+</body>
+</html>
+
+11. app02/views.py
+------------------
+
+def app02index(request):
+    return render(request, 'app02/index.html')
+
+12. app02/urls.py
+-----------------
+
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path('', views.app02index)
+]
+
+
+13. app03/templates/app03/index.html
+------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Django App03</h1>
+    <hr>
+    <a href="/">App 01 Page</a> <br><br>
+    <a href="/app02/">App 02 Page</a> <br><br>
+    <a href="/app03/">App 03 Page</a>
+</body>
+</html>
+
+14. app03/views.py
+------------------
+
+def app03index(request):
+    return render(request, 'app03/index.html')
+
+15. app03/urls.py
+-----------------
+
+from django.urls import include, path
+
+from . import views
+
+urlpatterns = [
+    path('', views.app03index),
+]
+
+16. projectName/urls.py
+-----------------------
+
+from django.contrib import admin
+from django.urls import include, path
+
+from app01 import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.index),
+    path('app02/', include('app02.urls')),
+    path('app03/', include('app03.urls')),
+]
+
+
+17. Run the Development Server:
+   ----------------------------
+   python manage.py runserver
+
+   Open your browser at: http://127.0.0.1:8000
+
+Your Django project is now set up and ready!
