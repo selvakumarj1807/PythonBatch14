@@ -113,14 +113,18 @@ python manage.py migrate
             <th>Name</th>
             <th>Email</th>
             <th>Message</th>
+            <th>Actions</th>
         </tr>
 
         {% for user in users %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>{{ forloop.counter }}</td> 
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.message }}</td>
+            <td>
+                <a href="/update/{{ user.id }}">Update</a> | <a href="/delete/{{ user.id }}">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
@@ -140,18 +144,18 @@ python manage.py migrate
 </head>
 
 <body>
-    <h1>Contact Form | <a href="/">Back to Home</a></h1>
+    <h1>{% if contact %}Update Contact{% else %}Add Contact{% endif %} | <a href="/">Back to Home</a></h1>
 
-    <form method="POST" action="/contactForm">
+    <form method="POST" action="{% if contact %}/update/{{ contact.id }}{% else %}/contactForm{% endif %}">
         {% csrf_token %}
         <label for="name">Name:</label>
-        <input type="text" name="name"><br><br>
+        <input type="text" name="name" value="{{ contact.name }}" ><br><br>
 
         <label for="email">Email:</label>
-        <input type="email" name="email"><br><br>
+        <input type="email" name="email" value="{{ contact.email }}"><br><br>
 
         <label for="message">Message:</label><br>
-        <textarea name="message" rows="4" cols="50"></textarea><br><br>
+        <textarea name="message" rows="4" cols="50">{{ contact.message }}</textarea><br><br>
 
         <input type="submit" value="Submit">
     </form>
@@ -182,6 +186,25 @@ def contactForm(request):
                
     return render(request, 'contactForm.html')
 
+def deleteUser(request, id):
+    user = Contact.objects.get(id=id)
+    user.delete()
+    return redirect('/')
+
+def updateUser(request, id):
+    contact = Contact.objects.get(id=id)
+    
+    if request.method == 'POST':
+        contact.name = request.POST.get('name')
+        contact.email = request.POST.get('email')
+        contact.message = request.POST.get('message')
+        contact.save()
+        
+        return redirect('/')
+
+    
+    return render(request, 'contactForm.html', {'contact': contact})
+
 13. projectName/urls.py
 -----------------------
 
@@ -193,8 +216,11 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
-    path('contactForm', views.contactForm)
+    path('contactForm', views.contactForm),
+    path('delete/<int:id>', views.deleteUser),
+    path('update/<int:id>', views.updateUser),
 ]
+
 
 
 14. Run the Development Server:

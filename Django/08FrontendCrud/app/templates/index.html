@@ -18,14 +18,18 @@
             <th>Name</th>
             <th>Email</th>
             <th>Message</th>
+            <th>Actions</th>
         </tr>
 
         {% for user in users %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>{{ forloop.counter }}</td> 
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.message }}</td>
+            <td>
+                <a href="/update/{{ user.id }}">Update</a> | <a href="/delete/{{ user.id }}">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
