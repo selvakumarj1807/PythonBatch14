@@ -1,0 +1,206 @@
+Django Project Setup Guide
+==========================
+
+Prerequisites:
+--------------
+- Python installed (preferably 3.8+)
+- pip installed (Python package manager)
+
+Step-by-Step Instructions:
+--------------------------
+
+1. Check Python & pip Versions:
+   --------------------------------
+   python --version
+   pip --version
+
+2. Create a Virtual Environment:
+   --------------------------------
+   python -m venv myworld
+
+3. Activate the Virtual Environment:
+   ----------------------------------
+   On Windows:
+       .\myworld\Scripts\activate
+
+   On macOS/Linux:
+       source myworld/bin/activate
+
+
+If have a CMD Error :
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+4. Install Django:
+   -----------------
+   pip install django
+
+   To verify:
+   django-admin --version
+
+5. Create a Django Project (in current directory):
+   ------------------------------------------------
+   django-admin startproject projectName .
+
+6. Create a Django App:
+   ---------------------
+   python manage.py startapp app
+
+7. Register the App in settings.py:
+   ---------------------------------
+   In projectName/settings.py, add your app to INSTALLED_APPS:
+
+       INSTALLED_APPS = [
+           ...
+           'app',
+       ]
+
+8. app/models.py
+----------------
+
+from django.db import models
+
+# Create your models here.
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+9. Make Migrations & Migrate
+----------------------------
+'''
+In Django, makemigrations and migrate are used to manage the database structure using Django ORM.
+
+Why do we use makemigrations?
+-----------------------------
+    1. Because Django does NOT directly change the database automatically.
+    2. It first creates a blueprint/instructions for database changes.
+
+Why do we use migrate?
+----------------------
+    1. Because migration files alone do NOT change the database.
+    2. migrate actually updates the database.
+'''
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+10. app/templates/index.html
+---------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Django Crud Application</h1>
+
+    <a href="/contactForm">Add Contact</a>
+
+    <hr>
+
+    <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+            <th>S. No</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.message }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+
+11. app/templates/contactForm.html
+----------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Contact Form | <a href="/">Back to Home</a></h1>
+
+    <form method="POST" action="/contactForm">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" name="name"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email"><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea name="message" rows="4" cols="50"></textarea><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>
+
+12. app/views.py
+----------------
+from django.shortcuts import redirect, render
+
+from app.models import Contact
+
+# Create your views here.
+
+def index(request):
+    users = Contact.objects.all()
+    return render(request, 'index.html', {'users': users})
+
+def contactForm(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        Contact.objects.create(name=name, email=email, message=message)
+        
+        return redirect('/')
+               
+    return render(request, 'contactForm.html')
+
+13. projectName/urls.py
+-----------------------
+
+from django.contrib import admin
+from django.urls import path
+
+from app import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.index),
+    path('contactForm', views.contactForm)
+]
+
+
+14. Run the Development Server:
+   ----------------------------
+   python manage.py runserver
+
+   Open your browser at: http://127.0.0.1:8000
+
+Your Django project is now set up and ready!
