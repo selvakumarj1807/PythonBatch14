@@ -103,7 +103,7 @@ python manage.py migrate
 <body>
     <h1>Django Crud Application</h1>
 
-    <a href="/contactForm">Add Contact</a>
+    <a href="{% url 'contactFormCreate' %}">Add Contact</a>
 
     <hr>
 
@@ -149,13 +149,13 @@ python manage.py migrate
     <form method="POST" action="{% if contact %}/update/{{ contact.id }}{% else %}/contactForm{% endif %}">
         {% csrf_token %}
         <label for="name">Name:</label>
-        <input type="text" name="name" value="{{ contact.name }}" ><br><br>
+        {{ form.name }}<br><br>
 
         <label for="email">Email:</label>
-        <input type="email" name="email" value="{{ contact.email }}"><br><br>
+        {{ form.email }}<br><br>
 
         <label for="message">Message:</label><br>
-        <textarea name="message" rows="4" cols="50">{{ contact.message }}</textarea><br><br>
+        {{ form.message }}<br><br>
 
         <input type="submit" value="Submit">
     </form>
@@ -163,10 +163,29 @@ python manage.py migrate
 
 </html>
 
-12. app/views.py
+12. app/forms.py
+----------------
+
+from django import forms
+
+from app.models import Contact
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'message']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Enter your name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Enter your email'}),
+            'message': forms.Textarea(attrs={'placeholder': 'Enter your message', 'rows': 5, 'cols': 40}),
+        }
+
+13. app/views.py
 ----------------
 from django.shortcuts import redirect, render
 
+from app.forms import ContactForm
 from app.models import Contact
 
 # Create your views here.
@@ -176,15 +195,16 @@ def index(request):
     return render(request, 'index.html', {'users': users})
 
 def contactForm(request):
+    form = ContactForm(request.POST)
+    
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-        Contact.objects.create(name=name, email=email, message=message)
-        
-        return redirect('/')
+        if form.is_valid():
+            form.save()
+            return redirect('/') 
+
+    return render(request, 'contactForm.html', {'form': form}) 
                
-    return render(request, 'contactForm.html')
+    return render(request, 'contactForm.html', {'form': form})
 
 def deleteUser(request, id):
     user = Contact.objects.get(id=id)
@@ -193,19 +213,18 @@ def deleteUser(request, id):
 
 def updateUser(request, id):
     contact = Contact.objects.get(id=id)
+    form = ContactForm(instance=contact) 
     
     if request.method == 'POST':
-        contact.name = request.POST.get('name')
-        contact.email = request.POST.get('email')
-        contact.message = request.POST.get('message')
-        contact.save()
-        
+        form = ContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
         return redirect('/')
 
     
-    return render(request, 'contactForm.html', {'contact': contact})
+    return render(request, 'contactForm.html', {'contact': contact, 'form': form})
 
-13. projectName/urls.py
+14. projectName/urls.py
 -----------------------
 
 from django.contrib import admin
@@ -216,14 +235,13 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
-    path('contactForm', views.contactForm),
+    path('contactForm', views.contactForm, name='contactFormCreate'),
     path('delete/<int:id>', views.deleteUser),
     path('update/<int:id>', views.updateUser),
 ]
 
 
-
-14. Run the Development Server:
+15. Run the Development Server:
    ----------------------------
    python manage.py runserver
 

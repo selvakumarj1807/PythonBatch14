@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 
+from app.forms import ContactForm
 from app.models import Contact
 
 # Create your views here.
@@ -9,15 +10,16 @@ def index(request):
     return render(request, 'index.html', {'users': users})
 
 def contactForm(request):
+    form = ContactForm(request.POST)
+    
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-        Contact.objects.create(name=name, email=email, message=message)
-        
-        return redirect('/')
+        if form.is_valid():
+            form.save()
+            return redirect('/') 
+
+    return render(request, 'contactForm.html', {'form': form}) 
                
-    return render(request, 'contactForm.html')
+    return render(request, 'contactForm.html', {'form': form})
 
 def deleteUser(request, id):
     user = Contact.objects.get(id=id)
@@ -26,14 +28,13 @@ def deleteUser(request, id):
 
 def updateUser(request, id):
     contact = Contact.objects.get(id=id)
+    form = ContactForm(instance=contact) 
     
     if request.method == 'POST':
-        contact.name = request.POST.get('name')
-        contact.email = request.POST.get('email')
-        contact.message = request.POST.get('message')
-        contact.save()
-        
+        form = ContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            form.save()
         return redirect('/')
 
     
-    return render(request, 'contactForm.html', {'contact': contact})
+    return render(request, 'contactForm.html', {'contact': contact, 'form': form})
