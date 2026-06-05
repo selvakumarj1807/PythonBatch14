@@ -1,0 +1,166 @@
+Step 01
+-------
+# Create and activate virtual environment
+python -m venv env
+source env/bin/activate  # (Windows: env\Scripts\activate)
+
+Step 02
+-------
+# Install Django and DRF
+pip install django djangorestframework
+
+Step 03
+-------
+# Start project and app
+django-admin startproject student_api .
+python manage.py startapp students
+
+Step 04
+-------
+student_api/settings.py
+-----------------------
+
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'students',
+]
+
+Step 05
+-------
+Django REST Framework’s generic class-based views 
+-------------------------------------------------
+
+students/models.py
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    email = models.EmailField(unique=True)
+    mobile_number = models.CharField(max_length=15, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+Step 06
+-------
+Migrations & Migrate in your Terminal
+-------------------------------------
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+Step 07
+-------
+students/serializers.py
+-----------------------
+
+from rest_framework import serializers
+from .models import Student
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = '__all__'
+
+Step 08
+-------
+students/views.py
+-----------------
+
+from django.shortcuts import render
+
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+
+from students.models import Student
+from students.serializers import StudentSerializer
+
+# Create your views here.
+
+class StudentViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    
+    def create(self, request):
+        serializer = StudentSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    'message': 'Student created successfully',
+                    'data': serializer.data
+                }, status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def list(self, request):
+        studentName = request.query_params.get('student_name', None)
+        
+        if studentName:
+            studentData = Student.objects.filter(name__icontains=studentName)
+        else:
+            studentData = Student.objects.all()
+        
+        serializer = StudentSerializer(studentData, many=True)
+        
+        return Response(
+            {
+                'students_count': studentData.count(),
+                'message': 'Students retrieved successfully',
+                'data': serializer.data
+            }, status=status.HTTP_200_OK
+        )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+
+
+Step 09
+-------
+students/urls.py
+----------------
+
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from students.views import StaffViewSet, StudentViewSet
+
+router = DefaultRouter()
+router.register(r'students', StudentViewSet, basename='student')
+router.register(r'staff', StaffViewSet, basename='staff')
+
+urlpatterns = [
+    path('', include(router.urls)),
+]
+
+Step 10
+-------
+student_api/urls.py
+-------------------
+
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('students.urls')),
+]
+
+Step 11
+-------
+
+Run the Server
+--------------
+
+python manage.py runserver
+
+To generate a requirements.txt file using pip freeze, use this command:
+
+pip freeze > requirements.txt
+
+To install later using the file:
+
+pip install -r requirements.txt
