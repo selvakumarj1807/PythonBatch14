@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "6228e9b0-3bb2-4c5d-8a28-0aa99aebcc5e",
+		"name": "Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34703078"
+	},
+	"item": [
+		{
+			"name": "notes App",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_name\":\"selva\",\r\n    \"user_email\":\"selva@example.com\",\r\n    \"password\":\"StrongPass123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/register/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (get JWT tokens)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_email\":\"selva@example.com\",\r\n    \"password\":\"StrongPass123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/auth/login/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a note",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwMTkwOTA0LCJpYXQiOjE3NjAxODczMDQsImp0aSI6IjhjYzYzZWVjNThiMTRmODlhMDc2ZjU2MmMwNDM1YmJhIiwidXNlcl9pZCI6Ijk5YTkyNDAwLTAxYTUtNDY4OS1iN2I2LTIyODdhMTAxZmQwNyJ9.zaOSCSwwSHTzOLtnlZE4cnDR2L5UXx9d9NHNolPHMUM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"note_title\":\"My Note 02\",\r\n    \"note_content\":\"My note content 02\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/notes/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"notes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List notes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwMTkwOTA0LCJpYXQiOjE3NjAxODczMDQsImp0aSI6IjhjYzYzZWVjNThiMTRmODlhMDc2ZjU2MmMwNDM1YmJhIiwidXNlcl9pZCI6Ijk5YTkyNDAwLTAxYTUtNDY4OS1iN2I2LTIyODdhMTAxZmQwNyJ9.zaOSCSwwSHTzOLtnlZE4cnDR2L5UXx9d9NHNolPHMUM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/notes/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"notes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Note API",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwMTkwOTA0LCJpYXQiOjE3NjAxODczMDQsImp0aSI6IjhjYzYzZWVjNThiMTRmODlhMDc2ZjU2MmMwNDM1YmJhIiwidXNlcl9pZCI6Ijk5YTkyNDAwLTAxYTUtNDY4OS1iN2I2LTIyODdhMTAxZmQwNyJ9.zaOSCSwwSHTzOLtnlZE4cnDR2L5UXx9d9NHNolPHMUM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/notes/f4b4b0ff-98db-4287-a4e5-6f2f08636e55/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"notes",
+								"f4b4b0ff-98db-4287-a4e5-6f2f08636e55",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit (Update) Note API",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwMTkwOTA0LCJpYXQiOjE3NjAxODczMDQsImp0aSI6IjhjYzYzZWVjNThiMTRmODlhMDc2ZjU2MmMwNDM1YmJhIiwidXNlcl9pZCI6Ijk5YTkyNDAwLTAxYTUtNDY4OS1iN2I2LTIyODdhMTAxZmQwNyJ9.zaOSCSwwSHTzOLtnlZE4cnDR2L5UXx9d9NHNolPHMUM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"note_title\": \"Updated Note Title\",\r\n   \"note_content\": \"Updated content goes here\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/notes/f319cf47-7dc4-4951-9ffc-e1a58246ac30/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"notes",
+								"f319cf47-7dc4-4951-9ffc-e1a58246ac30",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwMTkwOTA0LCJpYXQiOjE3NjAxODczMDQsImp0aSI6IjhjYzYzZWVjNThiMTRmODlhMDc2ZjU2MmMwNDM1YmJhIiwidXNlcl9pZCI6Ijk5YTkyNDAwLTAxYTUtNDY4OS1iN2I2LTIyODdhMTAxZmQwNyJ9.zaOSCSwwSHTzOLtnlZE4cnDR2L5UXx9d9NHNolPHMUM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"note_content\": \"Only content updated\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/notes/f319cf47-7dc4-4951-9ffc-e1a58246ac30/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"notes",
+								"f319cf47-7dc4-4951-9ffc-e1a58246ac30",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,41 @@
+# Project Setup Instructions
+
+## Backend Setup (Django)
+
+```bash
+cd notes-backend
+
+# Create and activate virtual environment
+python -m venv venv
+venv\Scripts\activate  # For Windows
+# source venv/bin/activate  # For macOS/Linux
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run database migrations
+python manage.py makemigrations
+python manage.py migrate
+
+# Start Django development server
+python manage.py runserver
+```
+
+---
+
+## Frontend Setup (React)
+
+```bash
+cd my-notes-app
+
+# Install Node dependencies
+npm install
+
+# Start React development server
+npm run dev
+```
+
+---
+
+- Django Backend: http://127.0.0.1:8000
+- React Frontend: http://localhost:3000/
